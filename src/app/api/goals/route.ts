@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/../../../../auth'
+import { auth } from '../../../../auth'
 import { supabaseAdmin } from '@/lib/supabase'
 
 const DEFAULT_GOALS = { calories: 2000, protein: 150, carbs: 200, fat: 65 }

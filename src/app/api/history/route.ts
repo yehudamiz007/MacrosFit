@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@/../../../../auth'
+import { auth } from '../../../../auth'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET() {
@@ -8,7 +8,6 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // Last 30 days aggregated by date
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
   const fromDate = thirtyDaysAgo.toISOString().slice(0, 10)
@@ -22,7 +21,6 @@ export async function GET() {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Aggregate by date
   const byDate: Record<string, { calories: number; protein: number; carbs: number; fat: number; count: number }> = {}
   for (const row of data || []) {
     if (!byDate[row.date]) byDate[row.date] = { calories: 0, protein: 0, carbs: 0, fat: 0, count: 0 }
