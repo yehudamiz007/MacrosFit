@@ -185,6 +185,7 @@ export default function AddMealPage() {
                   onChange={handleChange}
                   placeholder="0"
                   min="0"
+                  step="0.1"
                   dir="ltr"
                   className="flex-1 bg-transparent outline-none text-lg font-bold text-left"
                 />
