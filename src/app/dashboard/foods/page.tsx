@@ -129,7 +129,7 @@ export default function AddFoodPage() {
                     onChange={handleChange}
                     placeholder="0"
                     min="0"
-                    step="0.1"
+                    step="any"
                     dir="ltr"
                     className="flex-1 bg-transparent outline-none text-lg font-bold text-left"
                     style={{ color: f.color }}
