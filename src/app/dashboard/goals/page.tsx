@@ -47,7 +47,7 @@ export default function GoalsPage() {
     })
     setSaving(false)
     if (res.ok) {
-      setToast('✅ יעדים נשמרו!')
+      setToast('יעדים נשמרו')
       setTimeout(() => setToast(''), 2500)
     }
   }
@@ -59,30 +59,30 @@ export default function GoalsPage() {
   ]
 
   const fields = [
-    { name: 'calories', label: '🔥 קלוריות יומיות', unit: 'קק"ל', color: '#a78bfa' },
-    { name: 'protein', label: '💪 חלבון', unit: 'g', color: '#60a5fa' },
-    { name: 'carbs', label: '🍞 פחמימות', unit: 'g', color: '#facc15' },
-    { name: 'fat', label: '🥑 שומן', unit: 'g', color: '#fb923c' },
+    { name: 'calories', label: 'קלוריות יומיות', unit: 'קק"ל', color: '#a78bfa' },
+    { name: 'protein', label: 'חלבון', unit: 'g', color: '#60a5fa' },
+    { name: 'carbs', label: 'פחמימות', unit: 'g', color: '#facc15' },
+    { name: 'fat', label: 'שומן', unit: 'g', color: '#fb923c' },
   ]
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6 pt-2">
+    <div className="space-y-5 pt-2">
       <div>
-        <h1 className="text-xl font-bold">🎯 יעדים יומיים</h1>
-        <p className="text-gray-500 text-sm mt-1">הגדר את היעדים התזונתיים שלך</p>
+        <h1 className="text-lg font-bold" style={{ color: 'var(--color-text)' }}>יעדים יומיים</h1>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--color-text-muted)' }}>הגדר את היעדים התזונתיים שלך</p>
       </div>
 
       {/* Presets */}
       <div>
-        <p className="text-sm text-gray-400 mb-2">בחר תבנית מוכנה:</p>
+        <p className="text-xs font-medium mb-2" style={{ color: 'var(--color-text-muted)' }}>תבניות מוכנות</p>
         <div className="grid grid-cols-3 gap-2">
           {presets.map(p => (
             <button
@@ -93,10 +93,17 @@ export default function GoalsPage() {
                 carbs: String(p.carbs),
                 fat: String(p.fat),
               })}
-              className="bg-gray-900 border border-gray-800 hover:border-violet-500 rounded-xl p-3 text-xs text-gray-400 hover:text-white transition-all text-center"
+              className="rounded-xl p-3 text-center transition-all"
+              style={{
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text-muted)',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = '#7c5cfc')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--color-border)')}
             >
-              <div className="font-semibold mb-1">{p.name}</div>
-              <div className="text-gray-600">{p.calories} קק&quot;ל</div>
+              <div className="text-xs font-semibold mb-1" style={{ color: 'var(--color-text)' }}>{p.name}</div>
+              <div className="text-xs" style={{ color: 'var(--color-text-dim)' }}>{p.calories} קק&quot;ל</div>
             </button>
           ))}
         </div>
@@ -104,8 +111,11 @@ export default function GoalsPage() {
 
       <form onSubmit={handleSubmit} className="space-y-3">
         {fields.map(f => (
-          <div key={f.name} className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
-            <label className="block text-sm text-gray-400 mb-2">{f.label}</label>
+          <div key={f.name} className="rounded-xl p-4"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+            <label className="block text-xs font-medium mb-2.5" style={{ color: 'var(--color-text-muted)' }}>
+              {f.label}
+            </label>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -114,10 +124,16 @@ export default function GoalsPage() {
                 onChange={handleChange}
                 min="0"
                 dir="ltr"
-                className="flex-1 bg-gray-800 border border-gray-700 focus:border-violet-500 rounded-xl px-4 py-2.5 text-left outline-none transition-colors font-semibold"
-                style={{ color: f.color }}
+                className="flex-1 rounded-lg px-4 py-2.5 text-left outline-none transition-colors font-bold text-lg stat-value"
+                style={{
+                  background: 'var(--color-surface-2)',
+                  border: '1px solid var(--color-border)',
+                  color: f.color,
+                }}
+                onFocus={e => (e.currentTarget.style.borderColor = '#7c5cfc')}
+                onBlur={e => (e.currentTarget.style.borderColor = 'var(--color-border)')}
               />
-              <span className="text-gray-500 text-sm">{f.unit}</span>
+              <span className="text-sm w-10" style={{ color: 'var(--color-text-muted)' }}>{f.unit}</span>
             </div>
           </div>
         ))}
@@ -125,14 +141,16 @@ export default function GoalsPage() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-semibold py-3.5 rounded-2xl transition-all active:scale-95 shadow-lg shadow-violet-500/20"
+          className="w-full font-semibold py-3.5 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50"
+          style={{ background: '#7c5cfc', color: '#fff' }}
         >
-          {saving ? 'שומר...' : '💾 שמור יעדים'}
+          {saving ? 'שומר...' : 'שמור יעדים'}
         </button>
       </form>
 
       {toast && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-violet-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow-lg z-50">
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-full text-sm font-medium shadow-lg z-50"
+          style={{ background: 'var(--color-surface-2)', color: 'var(--color-text)', border: '1px solid var(--color-border)' }}>
           {toast}
         </div>
       )}

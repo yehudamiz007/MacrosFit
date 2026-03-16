@@ -26,7 +26,6 @@ export default function AddMealPage() {
   const [amount, setAmount] = useState('100')
   const searchRef = useRef<HTMLDivElement>(null)
 
-  // Debounced food search
   useEffect(() => {
     if (query.length < 2) { setResults([]); return }
     const t = setTimeout(async () => {
@@ -82,54 +81,61 @@ export default function AddMealPage() {
   }
 
   const macroFields = [
-    { name: 'calories', label: '🔥 קלוריות', unit: 'קק"ל' },
-    { name: 'protein', label: '💪 חלבון', unit: 'g' },
-    { name: 'carbs', label: '🍞 פחמימות', unit: 'g' },
-    { name: 'fat', label: '🥑 שומן', unit: 'g' },
+    { name: 'calories', label: 'קלוריות', unit: 'קק"ל', color: '#a78bfa' },
+    { name: 'protein', label: 'חלבון', unit: 'g', color: '#60a5fa' },
+    { name: 'carbs', label: 'פחמימות', unit: 'g', color: '#facc15' },
+    { name: 'fat', label: 'שומן', unit: 'g', color: '#fb923c' },
   ]
 
   return (
     <div className="space-y-5 pt-2">
       <div>
-        <h1 className="text-xl font-bold">➕ הוסף ארוחה</h1>
-        <p className="text-gray-500 text-sm mt-1">חפש מזון או הזן ידנית</p>
+        <h1 className="text-lg font-bold" style={{ color: 'var(--color-text)' }}>הוסף ארוחה</h1>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--color-text-muted)' }}>חפש מזון או הזן ידנית</p>
       </div>
 
       {/* Food search */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
-        <label className="block text-sm text-gray-400 mb-2">🔍 חפש מזון</label>
+      <div className="rounded-xl p-4"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+        <label className="block text-xs font-medium mb-2.5" style={{ color: 'var(--color-text-muted)' }}>
+          חיפוש מזון
+        </label>
 
         <div className="flex gap-2 mb-3">
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="עוף, אורז, סלמון..."
-            className="flex-1 bg-gray-800 border border-gray-700 focus:border-violet-500 rounded-xl px-4 py-2.5 text-right outline-none transition-colors text-sm"
+            className="flex-1 rounded-lg px-3 py-2.5 text-right outline-none text-sm transition-colors"
+            style={{
+              background: 'var(--color-surface-2)',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-text)',
+            }}
+            onFocus={e => (e.currentTarget.style.borderColor = '#7c5cfc')}
+            onBlur={e => (e.currentTarget.style.borderColor = 'var(--color-border)')}
           />
-          <div className="flex items-center gap-1 bg-gray-800 border border-gray-700 rounded-xl px-3">
+          <div className="flex items-center gap-1 rounded-lg px-3"
+            style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', minWidth: '80px' }}>
             <input
               type="number"
               value={amount}
               onChange={e => setAmount(e.target.value)}
-              className="w-14 bg-transparent outline-none text-center text-sm"
+              className="w-12 bg-transparent outline-none text-center text-sm"
+              style={{ color: 'var(--color-text)' }}
               min="1"
             />
-            <span className="text-gray-500 text-xs">g</span>
+            <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>g</span>
           </div>
         </div>
 
-        {/* Results */}
         {searching && (
-          <div className="text-center py-3 text-gray-500 text-sm">מחפש...</div>
+          <div className="text-center py-3 text-sm" style={{ color: 'var(--color-text-muted)' }}>מחפש...</div>
         )}
-        {/* Add new food link */}
         {query.length >= 2 && results.length === 0 && !searching && (
           <div className="text-center py-3">
-            <p className="text-gray-500 text-sm mb-2">לא נמצא &quot;{query}&quot;</p>
-            <Link
-              href="/dashboard/foods"
-              className="text-violet-400 text-sm hover:text-violet-300 underline"
-            >
+            <p className="text-sm mb-2" style={{ color: 'var(--color-text-muted)' }}>לא נמצא &quot;{query}&quot;</p>
+            <Link href="/dashboard/foods" className="text-sm transition-colors" style={{ color: '#7c5cfc' }}>
               + הוסף מזון חדש למסד הנתונים
             </Link>
           </div>
@@ -141,15 +147,19 @@ export default function AddMealPage() {
               <button
                 key={food.id}
                 onClick={() => selectFood(food)}
-                className="w-full flex items-center justify-between px-3 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-right transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-right transition-colors"
+                style={{ background: 'var(--color-surface-2)' }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = '#7c5cfc')}
               >
                 <div>
-                  <span className="text-sm font-medium">{food.name_he}</span>
-                  <span className="text-xs text-gray-500 mr-2">{food.category}</span>
+                  <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>{food.name_he}</span>
+                  <span className="text-xs mr-2" style={{ color: 'var(--color-text-muted)' }}>{food.category}</span>
                 </div>
-                <div className="text-xs text-gray-400 text-left">
-                  <span className="text-violet-400 font-semibold">{Math.round(food.calories * Number(amount) / 100)}</span>
-                  <span className="text-gray-600"> קק"ל</span>
+                <div className="text-xs text-left">
+                  <span className="font-semibold" style={{ color: '#7c5cfc' }}>
+                    {Math.round(food.calories * Number(amount) / 100)}
+                  </span>
+                  <span style={{ color: 'var(--color-text-dim)' }}> קק"ל</span>
                 </div>
               </button>
             ))}
@@ -160,26 +170,37 @@ export default function AddMealPage() {
       {/* Manual form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-xl">
+          <div className="text-sm px-4 py-3 rounded-lg"
+            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171' }}>
             {error}
           </div>
         )}
 
         <div>
-          <label className="block text-sm text-gray-400 mb-1.5">שם הארוחה *</label>
+          <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--color-text-muted)' }}>
+            שם הארוחה *
+          </label>
           <input
             name="name"
             value={form.name}
             onChange={handleChange}
-            placeholder="לדוגמה: עוף עם אורז..."
-            className="w-full bg-gray-900 border border-gray-800 focus:border-violet-500 rounded-2xl px-4 py-3 text-right outline-none transition-colors text-sm"
+            placeholder="לדוגמה: עוף עם אורז"
+            className="w-full rounded-xl px-4 py-3 text-right outline-none text-sm transition-colors"
+            style={{
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-text)',
+            }}
+            onFocus={e => (e.currentTarget.style.borderColor = '#7c5cfc')}
+            onBlur={e => (e.currentTarget.style.borderColor = 'var(--color-border)')}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           {macroFields.map(f => (
-            <div key={f.name} className="bg-gray-900 border border-gray-800 rounded-2xl p-3">
-              <label className="block text-xs text-gray-500 mb-1.5">{f.label}</label>
+            <div key={f.name} className="rounded-xl p-3"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+              <label className="block text-xs mb-1.5" style={{ color: 'var(--color-text-muted)' }}>{f.label}</label>
               <div className="flex items-center gap-1">
                 <input
                   type="number"
@@ -190,9 +211,10 @@ export default function AddMealPage() {
                   min="0"
                   step="any"
                   dir="ltr"
-                  className="flex-1 bg-transparent outline-none text-lg font-bold text-left"
+                  className="flex-1 bg-transparent outline-none text-xl font-bold text-left stat-value"
+                  style={{ color: f.color }}
                 />
-                <span className="text-gray-600 text-xs">{f.unit}</span>
+                <span className="text-xs" style={{ color: 'var(--color-text-dim)' }}>{f.unit}</span>
               </div>
             </div>
           ))}
@@ -201,29 +223,32 @@ export default function AddMealPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-semibold py-3.5 rounded-2xl transition-all active:scale-95 shadow-lg shadow-violet-500/20"
+          className="w-full font-semibold py-3.5 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50"
+          style={{ background: '#7c5cfc', color: '#fff' }}
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               שומר...
             </span>
-          ) : '✅ שמור ארוחה'}
+          ) : 'שמור ארוחה'}
         </button>
 
         <button
           type="button"
           onClick={() => router.back()}
-          className="w-full bg-gray-900 border border-gray-800 hover:border-gray-700 text-gray-400 font-medium py-3 rounded-2xl transition-all text-sm"
+          className="w-full font-medium py-3 rounded-xl transition-all text-sm"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
         >
           ביטול
         </button>
 
         <Link
           href="/dashboard/foods"
-          className="flex items-center justify-center gap-2 w-full border border-dashed border-gray-700 hover:border-violet-500 text-gray-500 hover:text-violet-400 font-medium py-3 rounded-2xl transition-all text-sm"
+          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl transition-all text-sm"
+          style={{ border: '1px dashed var(--color-border)', color: 'var(--color-text-muted)' }}
         >
-          🍽️ הוסף מזון חדש למסד הנתונים
+          + הוסף מזון חדש למסד הנתונים
         </Link>
       </form>
     </div>
