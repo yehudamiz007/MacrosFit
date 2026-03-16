@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { name_he, name_en, category, calories, protein, carbs, fat } = body
+  const { name_he, name_en, category, calories, protein, carbs, fat, default_amount } = body
 
   if (!name_he?.trim()) {
     return NextResponse.json({ error: 'שם בעברית חסר' }, { status: 400 })
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
       protein: Number(protein) || 0,
       carbs: Number(carbs) || 0,
       fat: Number(fat) || 0,
+      default_amount: Number(default_amount) || 100,
       added_by: session.user.id,
     })
     .select()

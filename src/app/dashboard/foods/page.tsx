@@ -9,6 +9,7 @@ export default function AddFoodPage() {
   const [form, setForm] = useState({
     name_he: '', name_en: '', category: 'כללי',
     calories: '', protein: '', carbs: '', fat: '',
+    default_amount: '100',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -106,6 +107,41 @@ export default function AddFoodPage() {
                 {cat}
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Default amount */}
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
+          <label className="block text-sm font-semibold text-gray-300 mb-2">🥄 כמות מנה ברירת מחדל</label>
+          <p className="text-xs text-gray-500 mb-3">כשמשתמש בוחר מזון זה, כמה גרם ימולאו אוטומטית?</p>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              name="default_amount"
+              value={form.default_amount}
+              onChange={handleChange}
+              min="1"
+              step="any"
+              dir="ltr"
+              className="w-24 bg-gray-800 border border-gray-700 focus:border-violet-500 rounded-xl px-4 py-2.5 text-center outline-none transition-colors font-bold text-violet-400"
+            />
+            <span className="text-gray-400 text-sm">גרם</span>
+            <div className="flex gap-2 flex-wrap">
+              {[30, 50, 60, 100, 150, 200, 250].map(v => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setForm(prev => ({ ...prev, default_amount: String(v) }))}
+                  className={`px-2.5 py-1 rounded-lg text-xs transition-all ${
+                    form.default_amount === String(v)
+                      ? 'bg-violet-600 text-white'
+                      : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                  }`}
+                >
+                  {v}g
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -12,6 +12,7 @@ interface Food {
   protein: number
   carbs: number
   fat: number
+  default_amount: number
 }
 
 export default function AddMealPage() {
@@ -38,7 +39,9 @@ export default function AddMealPage() {
   }, [query])
 
   function selectFood(food: Food) {
-    const multiplier = Number(amount) / 100
+    const portion = food.default_amount || 100
+    setAmount(String(portion))
+    const multiplier = portion / 100
     setForm({
       name: food.name_he,
       calories: String(Math.round(food.calories * multiplier)),
