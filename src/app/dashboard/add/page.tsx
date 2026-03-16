@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface Food {
   id: string
@@ -118,6 +119,19 @@ export default function AddMealPage() {
         {searching && (
           <div className="text-center py-3 text-gray-500 text-sm">מחפש...</div>
         )}
+        {/* Add new food link */}
+        {query.length >= 2 && results.length === 0 && !searching && (
+          <div className="text-center py-3">
+            <p className="text-gray-500 text-sm mb-2">לא נמצא &quot;{query}&quot;</p>
+            <Link
+              href="/dashboard/foods"
+              className="text-violet-400 text-sm hover:text-violet-300 underline"
+            >
+              + הוסף מזון חדש למסד הנתונים
+            </Link>
+          </div>
+        )}
+
         {results.length > 0 && (
           <div ref={searchRef} className="space-y-1 max-h-60 overflow-y-auto">
             {results.map(food => (
@@ -200,6 +214,13 @@ export default function AddMealPage() {
         >
           ביטול
         </button>
+
+        <Link
+          href="/dashboard/foods"
+          className="flex items-center justify-center gap-2 w-full border border-dashed border-gray-700 hover:border-violet-500 text-gray-500 hover:text-violet-400 font-medium py-3 rounded-2xl transition-all text-sm"
+        >
+          🍽️ הוסף מזון חדש למסד הנתונים
+        </Link>
       </form>
     </div>
   )
